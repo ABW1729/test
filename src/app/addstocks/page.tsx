@@ -7,6 +7,7 @@ import { getCookie } from 'cookies-next';
 import { ToastContainer, toast } from "react-toastify";
 import { redirect } from '@/lib/auth';
 import config from '@/lib/utils'
+import { useRouter } from 'next/router';
 import "react-toastify/dist/ReactToastify.css";
 interface Stock {
   name: string;
@@ -51,9 +52,12 @@ const StocksTable= () => {
         { id: 30, name: 'PepsiCo Inc.', symbol: 'PEP' },
     ];
 
+   const token = getCookie('token');
       useEffect(() => {
-      redirect();
-    }, []);
+     if (!token) {
+    router.replace("/");
+  }
+    }, [token,router]);
     const [selectedStocks, setSelectedStocks] = useState<{ [key: string]: Stock }>({});
 
     const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
