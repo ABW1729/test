@@ -1,0 +1,42 @@
+{
+  "name": "blendnext",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.18",
+    "@mui/material": "^5.15.18",
+    "@mui/styles": "^5.15.18",
+    "@mui/x-data-grid": "^7.4.0",
+    "bcryptjs": "^2.4.3",
+    "cookies-next": "^4.1.1",
+    "framer-motion": "^11.2.3",
+    "gsap": "^3.12.5",
+    "next": "14.2.3",
+    "next-auth": "^4.24.7",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-toastify": "^10.0.5",
+    "saas": "^1.0.0",
+    "sass": "^1.77.1",
+    "styled-components": "^6.1.11"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}
