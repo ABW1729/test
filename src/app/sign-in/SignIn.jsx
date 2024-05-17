@@ -5,16 +5,18 @@ import "./global.css";
 import { signIn } from "next-auth/react";
 import { ChangeEvent } from "react";
 import { setCookie,getCookie } from "cookies-next";
+import { useRouter } from 'next/navigation'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { redirect } from "@/lib/auth";
 import config from "@/lib/utils"
 export default function Login() {
+    const router = useRouter()
   const [isLoginForm, setIsLoginForm] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
     if (isLoggedIn) {
-      window.href.location="/watchlist";
+      router.replace("/watchlist");
     }
   }, [isLoggedIn]);
 
