@@ -49,7 +49,7 @@ export default function Login() {
     return;
   }
 
-  const res = await fetch("${config.login}", {
+  const res = await fetch("http://34.227.101.23:8000/api/login", {
     method: "POST",
     body: JSON.stringify(formValues),
     headers: {
@@ -90,7 +90,7 @@ export default function Login() {
     setLoading(false);
     return;
   }
-      const res = await fetch("${config.register}", {
+      const res = await fetch("http://34.227.101.23:8000/api/register", {
         method: "POST",
         body: JSON.stringify(formvalues),
         headers: {
