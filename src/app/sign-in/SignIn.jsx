@@ -49,7 +49,7 @@ export default function Login() {
     return;
   }
 
-  const res = await fetch("${config.apiUrl}/api/login", {
+  const res = await fetch("${config.login}", {
     method: "POST",
     body: JSON.stringify(formValues),
     headers: {
@@ -90,7 +90,7 @@ export default function Login() {
     setLoading(false);
     return;
   }
-      const res = await fetch("${config.apiUrl}/api/register", {
+      const res = await fetch("${config.register}", {
         method: "POST",
         body: JSON.stringify(formvalues),
         headers: {
