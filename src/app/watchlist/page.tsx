@@ -70,7 +70,6 @@ function Watchlist() {
   };
 
   const handleDeleteStock = async (stocks:Object) => {
-    console.log(selectedStocks);
     try {
       
       const res = await fetch("${config.delete}", {
