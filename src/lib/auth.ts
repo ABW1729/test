@@ -1,7 +1,9 @@
+"use client"
 import {getCookie} from "cookies-next"
+import { useRouter } from 'next/navigation'
 export const redirect = () => {
   const token = getCookie('token');
   if (!token) {
-    window.location.href = "/";
+   router.replace("/");
   }
 };
