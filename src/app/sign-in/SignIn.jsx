@@ -8,6 +8,7 @@ import { setCookie,getCookie } from "cookies-next";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { redirect } from "@/lib/auth";
+import config from "@/lib/utils"
 export default function Login() {
   const [isLoginForm, setIsLoginForm] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -48,7 +49,7 @@ export default function Login() {
     return;
   }
 
-  const res = await fetch("http://54.91.71.97:8000/api/login", {
+  const res = await fetch("${config.apiUrl}/api/login", {
     method: "POST",
     body: JSON.stringify(formValues),
     headers: {
@@ -89,7 +90,7 @@ export default function Login() {
     setLoading(false);
     return;
   }
-      const res = await fetch("http://54.91.71.97:8000/api/register", {
+      const res = await fetch("${config.apiUrl}/api/register", {
         method: "POST",
         body: JSON.stringify(formvalues),
         headers: {
