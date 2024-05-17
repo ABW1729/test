@@ -35,7 +35,7 @@ function Watchlist() {
 
   const fetchStocksData = async () => {
     try {
-      const res = await fetch("http://34.227.101.23:8000/api/stocks", {
+      const res = await fetch("http://localhost:8000/api/stocks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -81,7 +81,7 @@ function Watchlist() {
   const handleDeleteStock = async (stocks:Object) => {
     try {
       
-      const res = await fetch("http://34.227.101.23:8000/api/delete", {
+      const res = await fetch("http://localhost:8000/api/delete", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
