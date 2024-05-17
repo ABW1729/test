@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { makeStyles } from '@mui/material/styles';
 import { redirect } from '@/lib/auth';
+import config from "@/lib/utils"
 interface Stock {
   id: number;
   name: string;
@@ -25,7 +26,7 @@ function Watchlist() {
 
   const fetchStocksData = async () => {
     try {
-      const res = await fetch("http://54.91.71.97:8000/api/stocks", {
+      const res = await fetch("${config.apiUrl}/api/stocks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -72,7 +73,7 @@ function Watchlist() {
     console.log(selectedStocks);
     try {
       
-      const res = await fetch("http://localhost:8000/api/delete", {
+      const res = await fetch("${config.apiUrl}/api/delete", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
