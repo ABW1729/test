@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import { getCookie } from 'cookies-next';
 import { ToastContainer, toast } from "react-toastify";
 import { redirect } from '@/lib/auth';
+import config from '@/lib/utils'
 import "react-toastify/dist/ReactToastify.css";
 interface Stock {
   name: string;
@@ -88,7 +89,7 @@ const StocksTable= () => {
       
 
       console.log(selectedStocks);
-      const response = await fetch('http://54.91.71.97:8000/api/add', {
+      const response = await fetch('${config.apiUrl}/api/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
