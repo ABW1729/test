@@ -7,7 +7,7 @@ import { getCookie } from 'cookies-next';
 import { ToastContainer, toast } from "react-toastify";
 import { redirect } from '@/lib/auth';
 import config from '@/lib/utils'
-import { useRouter } from 'next/navgation';
+import { useRouter } from 'next/navigation';
 import "react-toastify/dist/ReactToastify.css";
 interface Stock {
   name: string;
