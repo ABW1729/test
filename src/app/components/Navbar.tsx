@@ -26,7 +26,7 @@ const settings = [ 'Logout'];
 const handleLogout = async () => {
   try {
     // Call the logout API
-    const res = await fetch("${config.apiUrl}/api/logout", {
+    const res = await fetch("${config.logout}", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
