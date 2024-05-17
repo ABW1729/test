@@ -7,8 +7,15 @@ import { ChangeEvent } from "react";
 import { setCookie,getCookie } from "cookies-next";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { redirect } from "@/lib/auth";
 export default function Login() {
   const [isLoginForm, setIsLoginForm] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    if (!isLoggedIn) {
+      redirect();
+    }
+  }, [isLoggedIn]);
 
   const toggleForm = () => {
     setIsLoginForm((prev) => !prev);
@@ -53,6 +60,7 @@ export default function Login() {
         toast.success("Succesfully signed-in");
         const data = await res.json();
         setCookie('token', data.token, { expires: new Date(data.expiry_timestamp) });
+        setIsLoggedIn(true);
         window.location.href='/watchlist';
       } else {
         toast.error("Invalid email or password");
