@@ -1,11 +1,11 @@
 ## Prerequisites
-AlphaVantage API key  
+AlphaVantage API key    
 Nodejs,npm,python,pip installed
 
 ## Environmnt Variables
-Schema is defined in backend/djangoapp/models.py
-APIs are defined in backend/djangoapp/views.py
-API KEY ,MongoDB URI should be replaced in views.py 
+Schema is defined in backend/djangoapp/models.py  
+APIs are defined in backend/djangoapp/views.py  
+API KEY ,MongoDB URI should be replaced in views.py   
 
 
 ## Installation
