@@ -13,9 +13,7 @@ interface Stock {
   symbol: string;
 }
 
-useEffect(() => {
-  redirect();
-}, []);
+
 
 
 const StocksTable= () => {
@@ -52,7 +50,10 @@ const StocksTable= () => {
         { id: 29, name: 'Chevron Corporation', symbol: 'CVX' },
         { id: 30, name: 'PepsiCo Inc.', symbol: 'PEP' },
     ];
-  
+
+      useEffect(() => {
+      redirect();
+    }, []);
     const [selectedStocks, setSelectedStocks] = useState<{ [key: string]: Stock }>({});
 
     const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
