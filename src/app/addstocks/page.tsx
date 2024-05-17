@@ -1,17 +1,20 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import { Button,Table, TableBody, TableCell,Typography, TableContainer, TableHead, TableRow, Paper, Checkbox } from '@mui/material';
 import Navbar from '../components/Navbar';
 import { getCookie } from 'cookies-next';
 import { ToastContainer, toast } from "react-toastify";
+import { redirect } from '@/lib/auth';
 import "react-toastify/dist/ReactToastify.css";
 interface Stock {
   name: string;
   symbol: string;
 }
 
-
+useEffect(() => {
+  redirect();
+}, []);
 
 
 const StocksTable= () => {
