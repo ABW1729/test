@@ -51,8 +51,9 @@ const StocksTable= () => {
         { id: 29, name: 'Chevron Corporation', symbol: 'CVX' },
         { id: 30, name: 'PepsiCo Inc.', symbol: 'PEP' },
     ];
-
-   const token = getCookie('token');
+     
+  const router = useRouter();
+const token = getCookie('token');
       useEffect(() => {
      if (!token) {
     router.replace("/");
