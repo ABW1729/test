@@ -1,8 +1,5 @@
-// const { clsx } = require("clsx");
-// const { twMerge } = require("tailwind-merge");
+const config = {
+  apiUrl: 'http://34.227.101.23:8000'
+};
 
-// function cn(...inputs) {
-//   return twMerge(clsx(inputs));
-// }
-
-// module.exports = { cn };
+export default config;
