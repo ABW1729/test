@@ -6,6 +6,7 @@ import { getCookie } from 'cookies-next';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { makeStyles } from '@mui/material/styles';
+import { redirect } from '@/lib/auth';
 interface Stock {
   id: number;
   name: string;
@@ -18,6 +19,7 @@ function Watchlist() {
 
 
   useEffect(() => {
+    redirect();
     fetchStocksData();
   }, []);
 
