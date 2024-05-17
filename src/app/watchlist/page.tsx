@@ -5,9 +5,9 @@ import Navbar from '../components/Navbar';
 import { getCookie } from 'cookies-next';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { makeStyles } from '@mui/material/styles';
-import { redirect } from '@/lib/auth';
-import config from "@/lib/utils"
+import { Loader } from 'rsuite';
+import { useRouter } from 'next/navigation';
+import './loader.css'
 interface Stock {
   id: number;
   name: string;
@@ -17,12 +17,21 @@ interface Stock {
 
 function Watchlist() {
   const [stocks, setStocks] = useState<Stock[]>([]);
+  const [loading, setLoading] = useState(true);
 
+     
+  const router = useRouter();
+  const token = getCookie('token');
 
   useEffect(() => {
-    redirect();
-    fetchStocksData();
-  }, []);
+    if (!token) {
+      router.replace("/");
+    } else {
+      setLoading(false); 
+      fetchStocksData();
+    }
+  }, [token, router]);
+
 
   const fetchStocksData = async () => {
     try {
@@ -99,6 +108,11 @@ function Watchlist() {
   };
 
   return (
+    (loading ? (
+      <div className="loader-container">
+        <div className="loader"></div>
+      </div>
+    ) :
     <>
       <Navbar />
       <div style={{ textAlign: 'center', margin: '10px auto', maxWidth: 'calc(80% + 20px)' }}>
@@ -144,7 +158,7 @@ function Watchlist() {
         </Table>
       </TableContainer>
     </div>
-    </>
+    </>)
   );
 }
 

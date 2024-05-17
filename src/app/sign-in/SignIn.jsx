@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import "./global.css";
 
 import { signIn } from "next-auth/react";
-import { ChangeEvent } from "react";
 import { setCookie,getCookie } from "cookies-next";
 import { useRouter } from 'next/navigation'
 import { ToastContainer, toast } from "react-toastify";

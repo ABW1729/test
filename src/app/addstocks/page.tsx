@@ -5,10 +5,9 @@ import { Button,Table, TableBody, TableCell,Typography, TableContainer, TableHea
 import Navbar from '../components/Navbar';
 import { getCookie } from 'cookies-next';
 import { ToastContainer, toast } from "react-toastify";
-import { redirect } from '@/lib/auth';
-import config from '@/lib/utils'
 import { useRouter } from 'next/navigation';
 import "react-toastify/dist/ReactToastify.css";
+import './loader.css'
 interface Stock {
   name: string;
   symbol: string;
@@ -51,14 +50,20 @@ const StocksTable= () => {
         { id: 29, name: 'Chevron Corporation', symbol: 'CVX' },
         { id: 30, name: 'PepsiCo Inc.', symbol: 'PEP' },
     ];
+
+    const [loading, setLoading] = useState(true);
+
      
   const router = useRouter();
-const token = getCookie('token');
-      useEffect(() => {
-     if (!token) {
-    router.replace("/");
-  }
-    }, [token,router]);
+  const token = getCookie('token');
+
+  useEffect(() => {
+    if (!token) {
+      router.replace("/");
+    } else {
+      setLoading(false); 
+    }
+  }, [token, router]);
     const [selectedStocks, setSelectedStocks] = useState<{ [key: string]: Stock }>({});
 
     const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,6 +119,10 @@ const token = getCookie('token');
     }
   };
   return (
+   
+    (loading ?  (<div className="loader-container">
+    <div className="loader"></div>
+  </div>) :
     <>
     <Navbar></Navbar>
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -161,6 +170,7 @@ const token = getCookie('token');
       </TableContainer>
     </div>
     </>)
+    )
 };
 
 export default StocksTable;
