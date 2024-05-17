@@ -24,7 +24,7 @@ function Watchlist() {
 
   const fetchStocksData = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/stocks", {
+      const res = await fetch("http://54.91.71.97:8000/api/stocks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
