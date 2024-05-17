@@ -89,7 +89,7 @@ const StocksTable= () => {
       
 
       console.log(selectedStocks);
-      const response = await fetch('${config.apiUrl}/api/add', {
+      const response = await fetch('${config.add}', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
