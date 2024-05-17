@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import "./global.css";
 
 import { signIn } from "next-auth/react";
-import { useSearchParams, useRouter } from "next/navigation";
 import { ChangeEvent } from "react";
 import { setCookie,getCookie } from "cookies-next";
 import { ToastContainer, toast } from "react-toastify";
@@ -15,7 +14,6 @@ export default function Login() {
     setIsLoginForm((prev) => !prev);
   };
 
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [loadings, setGoogleLoading] = useState(false);
   useEffect(() => {
@@ -30,8 +28,8 @@ export default function Login() {
   });
  
 
-  const searchParams = useSearchParams();
-  const callbackUrl = "http://localhost:3000";
+ 
+  const callbackUrl = "/";
 
   const onSubmit = async (e) => {
     e.preventDefault();
