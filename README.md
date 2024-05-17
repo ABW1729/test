@@ -17,11 +17,11 @@ npm run dev
 ## This will start frontend of app at http://localhost:3000
 
 ## Backend  Installation
-cd test
-cd backend/backend
-pip install Django
-pip install pymongo
-pip install django-cors-headers
-python3 manage.py runserver
+cd test  
+cd backend/backend  
+pip install Django  
+pip install pymongo  
+pip install django-cors-headers  
+python3 manage.py runserver  
 
 ##This will start backend at http://localhost:8000
