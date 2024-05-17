@@ -1,4 +1,4 @@
-import getCookie from "cookies-next"
+import {getCookie} from "cookies-next"
 export const redirect = () => {
   const token = getCookie('token');
   if (!token) {
