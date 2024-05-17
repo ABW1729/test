@@ -13,8 +13,8 @@ export default function Login() {
   const [isLoginForm, setIsLoginForm] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
-    if (!isLoggedIn) {
-      redirect();
+    if (isLoggedIn) {
+      window.href.location="/watchlist";
     }
   }, [isLoggedIn]);
 
