@@ -85,7 +85,7 @@ const StocksTable= () => {
       
 
       console.log(selectedStocks);
-      const response = await fetch('http://localhost:8000/api/add', {
+      const response = await fetch('http://54.91.71.97:8000/api/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
