@@ -16,8 +16,7 @@ npm run dev
 
 ## This will start frontend of app at http://localhost:3000
 
-## Backend 
-## Installation
+## Backend  Installation
 cd test
 cd backend/backend
 pip install Django
