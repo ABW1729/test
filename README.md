@@ -9,10 +9,10 @@ API KEY ,MongoDB URI should be replaced in views.py
 
 
 ## Installation
-git clone #clone url
-cd test
-npm i --legacy-peer-deps
-npm run dev
+git clone {clone url}  
+cd test  
+npm i --legacy-peer-deps  
+npm run dev  
 
 ## This will start frontend of app at http://localhost:3000
 
