@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import config from '@/lib/utils';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getCookie,deleteCookie } from 'cookies-next';
@@ -25,7 +26,7 @@ const settings = [ 'Logout'];
 const handleLogout = async () => {
   try {
     // Call the logout API
-    const res = await fetch("http://54.91.71.97:8000/api/logout", {
+    const res = await fetch("${config.apiUrl}/api/logout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
