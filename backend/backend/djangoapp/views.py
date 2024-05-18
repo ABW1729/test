@@ -231,6 +231,45 @@ def validate_token(request):
     
     return False
     
+def delete_stock(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        token, email = extract(data.get('token'))
+        
+        if not email in user_tokens or user_tokens[email]['token'] != token:
+            return JsonResponse({'message': 'Relogin'}, status=401)
+
+        stock_data = data.get('stocks')
+        
+        if not stock_data:
+            return JsonResponse({'message': 'No stocks provided'}, status=400)
+        
+        try:
+            user = collection.find_one({'email': email})
+            if user:
+                removed_stocks = []
+                not_found_stocks = []
+
+                for stock_symbol in stock_data:
+                    if stock_symbol in user.get('stocks', []):
+                        # Update the user document to remove the stock from the stocks array
+                        collection.update_one({'email': email}, {'$unset': {f'stocks.{stock_symbol}': ""}})
+                        removed_stocks.append(stock_symbol)
+                    else:
+                        not_found_stocks.append(stock_symbol)
+
+                return JsonResponse({
+                    'message': 'Stocks processed',
+                    'removed_stocks': removed_stocks,
+                    'not_found_stocks': not_found_stocks
+                }, status=200)
+            else:
+                return JsonResponse({'message': 'User not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'message': str(e)}, status=400)
+    else:
+        return JsonResponse({'message': 'Method Not Allowed'}, status=405)
+
 def add_stock(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -243,46 +282,31 @@ def add_stock(request):
         try:
             user = collection.find_one({'email': email})
             if user:
+                added_stocks = []
+                already_existing_stocks = []
+                
                 for symbol, stock_data in stocks_data.items():
                     name = stock_data.get('name')
                     if symbol in user.get('stocks', {}):
-                        return JsonResponse({'message': f'Stock {symbol} already in user\'s list'}, status=400)
-                    collection.update_one({'email': email}, {'$set': {f'stocks.{symbol}': {'name': name, 'price': stock_price(symbol)}}})
+                        already_existing_stocks.append(symbol)
+                    else:
+                        collection.update_one(
+                            {'email': email},
+                            {'$set': {f'stocks.{symbol}': {'name': name, 'price': stock_price(symbol)}}}
+                        )
+                        added_stocks.append(symbol)
                 
-                return JsonResponse({'message': 'Stocks added successfully'}, status=200)
+                if already_existing_stocks:
+                    return JsonResponse({
+                        'message': 'Some stocks were already in the user\'s list',
+                        'added_stocks': added_stocks,
+                        'already_existing_stocks': already_existing_stocks
+                    }, status=200)
+                else:
+                    return JsonResponse({'message': 'Stocks added successfully', 'added_stocks': added_stocks}, status=200)
             else:
                 return JsonResponse({'message': 'User not found'}, status=404)
         except Exception as e:
             return JsonResponse({'message': str(e)}, status=400)
     else:
         return JsonResponse({'message': 'Method Not Allowed'}, status=405)
-
-
-def delete_stock(request):
-    if request.method == 'POST':
-        data=json.loads(request.body)
-        token,email = extract(data.get('token'))
-        if  not email in user_tokens or  user_tokens[email]['token'] != token:
-            return JsonResponse({'message': 'Relogin'}, status=401)
-
-        
-        stock_data = data.get('stocks')
-
-        try:
-            user=collection.find_one({'email': email})
-            if user:
-                # Check if the stock exists in the user's stock list
-              for stock_symbol in stock_data:
-                if stock_symbol in user.get('stocks', []):
-                    # Update the user document to remove the stock from the stocks array
-                    collection.update_one({'email': email},{'$unset': {f'stocks.{stock_symbol}': ""}})
-                    return JsonResponse({'message': 'Stock removed successfully'}, status=200)
-                else:
-                    return JsonResponse({'message': 'Stock not found in user\'s list'}, status=400)
-            else:
-                return JsonResponse({'message': 'User not found'}, status=404)
-        except Exception as e:
-            return JsonResponse({'message': str(e)}, status=400)  
-    else:
-        return JsonResponse({'message': 'Method Not Allowed'}, status=405)
-
