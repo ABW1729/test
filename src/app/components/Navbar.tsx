@@ -41,7 +41,7 @@ const handleLogout = async () => {
        deleteCookie('token'); 
       window.location.href="/";
     } else {
-      toast.error('Logout failed');
+      toast.error('Clear Cookies and Relogin');
     }
   } catch (error) {
     console.error('Error:', error);
