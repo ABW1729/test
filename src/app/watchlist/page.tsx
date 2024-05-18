@@ -20,17 +20,16 @@ function Watchlist() {
   const [loading, setLoading] = useState(true);
 
      
-  const router = useRouter();
   const token = getCookie('token');
 
   useEffect(() => {
     if (!token) {
-      router.replace("/");
+     window.location.href="/";
     } else {
       setLoading(false); 
       fetchStocksData();
     }
-  }, [token, router]);
+  }, [token]);
 
 
   const fetchStocksData = async () => {
@@ -47,7 +46,9 @@ function Watchlist() {
         const data = await res.json();
         setStocks(data.stocks);
       } else {
-        toast.error('Cannot fetch stocks');
+        const data = await res.json();
+        const msg=data.message;
+        toast.error(msg);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -94,7 +95,9 @@ function Watchlist() {
         fetchStocksData();
         toast.success('Stock deleted successfully');
       } else {
-        toast.error('Unable to delete stock');
+         const data = await res.json();
+        const msg=data.message;
+        toast.error(msg);
       }
     } catch (error) {
       console.error('Error:', error);
