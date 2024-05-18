@@ -65,7 +65,9 @@ export default function Login() {
         setIsLoggedIn(true);
         window.location.href='/watchlist';
       } else {
-        toast.error("Invalid email or password");
+          const data = await res.json();
+          const msg=data.message;
+        toast.error(msg);
       }
     } catch (error) {
       console.log(error);
