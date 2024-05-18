@@ -99,7 +99,6 @@ const StocksTable= () => {
     try {
       
 
-      console.log(selectedStocks);
       const response = await fetch('http://localhost:8000/api/add', {
         method: 'POST',
         headers: {
@@ -112,7 +111,9 @@ const StocksTable= () => {
       if (response.ok) {
         toast.success('Stocks added successfully');
       } else {
-        toast.error('Failed to add stocks');
+        const data=await response.json();
+        const msg=response.message;
+        toast.error(msg);
       }
     } catch (error) {
       console.error('Error:', error);
