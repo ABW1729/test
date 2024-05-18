@@ -10,9 +10,12 @@ import uuid,json
 import requests
 from datetime import datetime, timedelta
 def index(request):
-	return HttpResponse("<h1>Hello</h1>")
+        return HttpResponse("<h1>Hello</h1>")
 import pymongo
-client=pymongo.MongoClient('mongodb+srv://aniketwani1729:6Pj1S6l5OBoF4oGG@cluster0.4bwrce0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+
+##Add MONGODB URI here
+MONGODBURI=""
+client=pymongo.MongoClient(${MONGODBURI})
 
 db=client['users']
 collection=db['users']
@@ -24,20 +27,18 @@ invalid_tokens = set()
 # Token expiry duration in seconds
 TOKEN_EXPIRY_DURATION = 3600  # 1 hour (adjust as needed)
 
-api_key='SU3EI8TDJ9BCKSP6'
+##Add you api key here
+api_key=""
 
 
 def stock_price(symbol):
-    url = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&interval=5min&apikey={api_key}'
+    url = f'http://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={api_key}'
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
        
-        return data['Global Quote']['05. price']
+        return data
         
-    else:
-        print(f"Error: {response.status_code}, {response.text}")
-        return None
  
 
 def extract(cookie_value):
@@ -50,7 +51,7 @@ def get_stock_price(request):
         symbol = data.get('symbol')
         api_key = 'SU3EI8TDJ9BCKSP6' 
         
-        latest_price = stock_price(symbol, api_key)
+        latest_price = stock_price(symbol)
         if latest_price:
             return JsonResponse({'symbol': symbol, 'latest_price': latest_price}, status=200)
         else:
@@ -231,6 +232,9 @@ def validate_token(request):
     
     return False
     
+
+
+
 def delete_stock(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -270,43 +274,75 @@ def delete_stock(request):
     else:
         return JsonResponse({'message': 'Method Not Allowed'}, status=405)
 
+
+
+
+
+
 def add_stock(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        token, email = extract(data.get('token'))
-        if not email in user_tokens or user_tokens[email]['token'] != token:
-            return JsonResponse({'message': 'Relogin'}, status=401)
-
-        stocks_data = data.get('stocks', {})
-        
         try:
+            data = json.loads(request.body)
+            token, email = extract(data.get('token'))
+            if not email in user_tokens or user_tokens[email]['token'] != token:
+                return JsonResponse({'message': 'Relogin'}, status=401)
+            
+            stocks_data = data.get('stocks', {})
+            
             user = collection.find_one({'email': email})
-            if user:
-                added_stocks = []
-                already_existing_stocks = []
+            if not user:
+                return JsonResponse({'message': 'User not found'}, status=404)
+            
+            added_stocks = []
+            already_existing_stocks = []
+            
+            for symbol, stock_data in stocks_data.items():
+                name = stock_data.get('name')
                 
-                for symbol, stock_data in stocks_data.items():
-                    name = stock_data.get('name')
-                    if symbol in user.get('stocks', {}):
-                        already_existing_stocks.append(symbol)
+                # Initialize price
+                price = None
+                
+                # Fetch stock price
+                try:
+                    stock_data_response = stock_price(symbol)
+                    print(stock_data_response)
+                    if 'Global Quote' in stock_data_response:
+                        price = stock_data_response['Global Quote'].get('05. price')
+                        print(price)
                     else:
+                        info = stock_data_response.get('Information', 'Stock information not available')
+                        print(info)
+                        return JsonResponse({'message': info}, status=400)
+                except Exception as e:
+                    return JsonResponse({'message': f'Error processing stock symbol {symbol}: {e}'}, status=400)
+                
+                if symbol in user.get('stocks', {}):
+                    already_existing_stocks.append(symbol)
+                else:
+                    try:
+                        # Update the user document with the new stock
                         collection.update_one(
                             {'email': email},
-                            {'$set': {f'stocks.{symbol}': {'name': name, 'price': stock_price(symbol)}}}
+                            {'$set': {f'stocks.{symbol}': {'name': name, 'price': price}}}
                         )
-                        added_stocks.append(symbol)
-                
-                if already_existing_stocks:
-                    return JsonResponse({
-                        'message': 'Some stocks were already in the user\'s list',
-                        'added_stocks': added_stocks,
-                        'already_existing_stocks': already_existing_stocks
-                    }, status=200)
-                else:
-                    return JsonResponse({'message': 'Stocks added successfully', 'added_stocks': added_stocks}, status=200)
+                    except Exception as e:
+                        return JsonResponse({'message': f'DB error: {e}'}, status=500)
+                    
+                    added_stocks.append(symbol)
+            
+            if already_existing_stocks:
+                return JsonResponse({
+                    'message': 'Some stocks were already in the user\'s list',
+                    'added_stocks': added_stocks,
+                    'already_existing_stocks': already_existing_stocks
+                }, status=200)
             else:
-                return JsonResponse({'message': 'User not found'}, status=404)
+                return JsonResponse({'message': 'Stocks added successfully', 'added_stocks': added_stocks}, status=200)
+        except json.JSONDecodeError:
+            return JsonResponse({'message': 'Invalid JSON'}, status=400)
+        except KeyError as e:
+            return JsonResponse({'message': f'Missing key: {e}'}, status=400)
         except Exception as e:
-            return JsonResponse({'message': str(e)}, status=400)
+            return JsonResponse({'message': f'Unexpected error: {e}'}, status=500)
     else:
         return JsonResponse({'message': 'Method Not Allowed'}, status=405)
