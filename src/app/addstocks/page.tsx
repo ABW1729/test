@@ -63,7 +63,7 @@ const StocksTable= () => {
     } else {
       setLoading(false); 
     }
-  }, [token, router]);
+  }, [token]);
     const [selectedStocks, setSelectedStocks] = useState<{ [key: string]: Stock }>({});
 
     const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
