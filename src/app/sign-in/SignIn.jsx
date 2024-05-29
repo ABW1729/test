@@ -7,7 +7,6 @@ import { setCookie,getCookie } from "cookies-next";
 import { useRouter } from 'next/navigation'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { redirect } from "@/lib/auth";
 import config from "@/lib/utils"
 export default function Login() {
     const router = useRouter()
@@ -50,7 +49,7 @@ export default function Login() {
     return;
   }
 
-  const res = await fetch("http://localhost:8000/api/login", {
+  const res = await fetch("https://backend-klm7.onrender.com/api/login", {
     method: "POST",
     body: JSON.stringify(formValues),
     headers: {
@@ -93,7 +92,7 @@ export default function Login() {
     setLoading(false);
     return;
   }
-      const res = await fetch("http://localhost:8000/api/register", {
+      const res = await fetch("https://backend-klm7.onrender.com/api/register", {
         method: "POST",
         body: JSON.stringify(formvalues),
         headers: {
