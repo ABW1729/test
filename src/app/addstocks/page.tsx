@@ -99,7 +99,7 @@ const StocksTable= () => {
     try {
       
 
-      const response = await fetch('http://localhost:8000/api/add', {
+      const response = await fetch('https://backend-klm7.onrender.com/api/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -112,7 +112,7 @@ const StocksTable= () => {
         toast.success('Stocks added successfully');
       } else {
         const data=await response.json();
-        const msg=response.message;
+        const msg=data.message;
         toast.error(msg);
       }
     } catch (error) {
