@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-
+from datetime import timedelta
+import mongoengine
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,12 +28,15 @@ SECRET_KEY = 'django-insecure-j*$_gs7+ps495_(f=-as054i-2+&blb8)aep7-+q&^qa#3i67j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['backend-klm7.onrender.com']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+'rest_framework_simplejwt.token_blacklist',
+'rest_framework',
+    'rest_framework_simplejwt',
 'corsheaders',
     'djangoapp',
     'django.contrib.admin',
@@ -77,7 +81,8 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
-    # Add other origins if needed
+    'http://34.227.101.23:3000',
+    'https://frontend-seven-xi-32.vercel.app'
 ]
 
 
@@ -129,3 +134,30 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'djangoapp.authentication.MongoJWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': 'c^p&#svff^m-h*_i4a*txo-l#m64x+w&$v=r42^ki)lx1si@eo',  # Replace with your secret key
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None,
+    'USER_ID_FIELD': '_id',
+    'USER_ID_CLAIM': 'user_id',
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+}
+
+
