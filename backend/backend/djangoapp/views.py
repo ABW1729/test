@@ -18,10 +18,10 @@ from rest_framework_simplejwt.exceptions import TokenError
 from bson.objectid import ObjectId
 
 
-client = MongoClient('mongodb+srv://aniketwani1729:6Pj1S6l5OBoF4oGG@cluster0.4bwrce0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+client = MongoClient(MONGO_DB_URI)  #Replace MongoDB URI here
 db = client['users']
 collection = db['users']
-api_key = 'NVCLY86372DZJZTN'
+api_key = API_KEY   #Replace API KEY here
 
 
 class MongoJWTAuthentication(JWTAuthentication):
